@@ -25,14 +25,14 @@
      <item><widget class="QLabel" name="Eyebrow"><property name="text"><string>SEU PRÓXIMO MUNDO COMEÇA AQUI</string></property></widget></item>
      <item><widget class="QLabel" name="WelcomeTitle"><property name="text"><string>Prepare-se para
 o New Horizon.</string></property></widget></item>
-     <item><widget class="QLabel" name="WelcomeDescription"><property name="text"><string>Os mods do servidor e o Forge, prontos no seu Minecraft em poucos cliques.</string></property><property name="wordWrap"><bool>true</bool></property></widget></item>
+     <item><widget class="QLabel" name="WelcomeDescription"><property name="text"><string>Instale uma vez. Os mods do servidor ficam atualizados automaticamente em segundo plano.</string></property><property name="wordWrap"><bool>true</bool></property></widget></item>
      <item><widget class="QFrame" name="PackCard"><layout class="QVBoxLayout" name="PackLayout">
       <property name="spacing"><number>12</number></property><property name="leftMargin"><number>18</number></property><property name="topMargin"><number>16</number></property><property name="rightMargin"><number>18</number></property><property name="bottomMargin"><number>16</number></property>
       <item><widget class="QLabel" name="PackCaption"><property name="text"><string>O QUE VAMOS INSTALAR</string></property></widget></item>
       <item><widget class="QLabel" name="ModRow"><property name="text"><string>✓   New Horizon Mod</string></property></widget></item>
       <item><widget class="QLabel" name="McefRow"><property name="text"><string>✓   New Horizon MCEF</string></property></widget></item>
       <item><widget class="QLabel" name="ForgeRow"><property name="text"><string>✓   Forge 47.4.0 · Minecraft 1.20.1</string></property></widget></item>
-      <item><widget class="QLabel" name="ForgeHint"><property name="text"><string>Se o Forge já estiver instalado, ele será mantido.</string></property><property name="wordWrap"><bool>true</bool></property></widget></item>
+      <item><widget class="QLabel" name="ForgeHint"><property name="text"><string>Atualizações a cada 30 minutos, quando o jogo estiver fechado. O Forge existente será mantido.</string></property><property name="wordWrap"><bool>true</bool></property></widget></item>
      </layout></widget></item>
      <item><widget class="QLabel" name="FolderCaption"><property name="text"><string>PASTA DO MINECRAFT</string></property></widget></item>
      <item><layout class="QHBoxLayout" name="FolderLayout"><property name="spacing"><number>8</number></property>

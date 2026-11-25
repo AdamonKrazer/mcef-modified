@@ -99,11 +99,14 @@ def generate(manifest_path: Path, work: Path, version: str | None = None,
     files.extend({"path": name, "sha256": sha256(payload / name)}
                  for name in ("forge-installer.jar", "forge-version.json"))
     runtime = {"version": pack["version"], "minecraft": pack["minecraft"],
-               "forge_profile": profile_id, "files": files}
+               "forge_profile": profile_id, "files": files,
+               "repository_url": repository_url.rstrip("/"), "background_updates": True}
     (payload / "manifest.json").write_text(json.dumps(runtime, indent=2), encoding="utf-8")
     # Windows PowerShell 5 needs BOM for non-ASCII script text.
     (payload / "ensure-forge.ps1").write_text(
         (ROOT / "installer" / "ensure-forge.ps1").read_text(encoding="utf-8"), encoding="utf-8-sig")
+    for name in ("background-task.ps1", "background-update.ps1"):
+        (payload / name).write_text((ROOT / "installer" / name).read_text(encoding="utf-8"), encoding="utf-8-sig")
     script = (ROOT / "installer" / "component.qs").read_text(encoding="utf-8")
     (meta / "installscript.qs").write_text(script.replace("// __MOD_COPY_OPERATIONS__", "\n    ".join(copies)), encoding="utf-8")
     package = ET.Element("Package")
@@ -146,6 +149,7 @@ def generate(manifest_path: Path, work: Path, version: str | None = None,
     resources = ET.Element("RCC")
     resource = ET.SubElement(resources, "qresource", prefix="/newhorizon")
     ET.SubElement(resource, "file", alias="server-logo.png").text = str(ROOT / "assets/server-logo.png")
+    ET.SubElement(resource, "file", alias="background-update.ps1").text = str(payload / "background-update.ps1")
     localized = ET.SubElement(resources, "qresource", prefix="/translations")
     for alias, filename in (("newhorizon_pt_BR.qm", "ifw_pt_BR.qm"), ("newhorizonqt_pt_BR.qm", "qt_pt_BR.qm")):
         ET.SubElement(localized, "file", alias=alias).text = str(ROOT / "installer/translations" / filename)
@@ -153,6 +157,8 @@ def generate(manifest_path: Path, work: Path, version: str | None = None,
     xml_file(config / "config.xml", installer)
     for name in ("controller.qs", "style.qss"):
         shutil.copyfile(ROOT / "installer" / name, config / name)
+    control = (config / "controller.qs").read_text(encoding="utf-8")
+    (config / "controller.qs").write_text(control.replace("__BACKGROUND_REPOSITORY__", json.dumps(repository_url.rstrip("/"))), encoding="utf-8")
     return pack
 
 

@@ -69,7 +69,8 @@ def main():
         assert (game / "mods" / name).read_bytes() == (ROOT / "assets" / name).read_bytes()
     maintenance = game / "NewHorizonMaintenance.exe"
     assert maintenance.is_file()
-    assert (game / "Atualizar New Horizon.lnk").is_file()
+    runtime = json.loads((game / '.newhorizon/manifest.json').read_text())
+    assert (game / "Atualizar New Horizon.lnk").is_file() != bool(runtime.get('background_updates'))
     if args.update_repository or args.update_url or args.update_default:
         default_url = json.loads((ROOT / "pack.json").read_text())["repository_url"] if args.update_default else None
         repository_url = (default_url or args.update_url or args.update_repository.resolve().as_uri()).rstrip("/")

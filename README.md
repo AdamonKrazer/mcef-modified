@@ -32,7 +32,11 @@ Feche o jogo antes de instalar, atualizar ou desinstalar. Os dois nomes de arqui
 
 ## Atualizações
 
-O instalador cria `NewHorizonMaintenance.exe` e `Atualizar New Horizon.lnk` dentro de `.minecraft`. O atalho abre a tela de atualizações do Qt. Não há atualização automática em segundo plano.
+O instalador ativa as **atualizações automáticas em segundo plano** para o usuário atual do Windows. A conferência acontece um minuto após entrar no Windows e a cada 30 minutos enquanto a sessão estiver aberta. Os mods novos são baixados e instalados sem abrir janelas e sem exigir atalhos. Quando não há novidades, nada é reinstalado.
+
+Se o Minecraft estiver aberto, a atualização é adiada para a próxima verificação. Uma falha de conexão também será tentada novamente no próximo ciclo. O mecanismo usa o Agendador de Tarefas do Windows e o Qt IFW, sem senha armazenada e sem manter um processo consumindo recursos entre as verificações. A tarefa é removida na desinstalação. `NewHorizonMaintenance.exe` permanece como mecanismo interno de atualização e desinstalação; não é necessário abri-lo para manter os mods atualizados.
+
+Quem já instalou uma versão antiga deve executar **uma vez** o novo instalador, com o jogo fechado. Ele atualiza a instalação existente e ativa a rotina automática. O atalho de atualização da versão anterior é removido nessa migração.
 
 O instalador está conectado ao catálogo Qt publicado na branch **mods** de [AdamonKrazer/mcef-modified](https://github.com/AdamonKrazer/mcef-modified/tree/mods):
 
@@ -45,15 +49,15 @@ Para publicar novos mods:
 1. Na branch `mods`, substitua `assets/newhorizon-mod.jar` e/ou `assets/newhorizon-mcef.jar` pelos novos JARs, mantendo os nomes.
 2. Faça commit e push para essa branch (ou use o upload de arquivos do GitHub).
 3. Aguarde o workflow **Publicar mods New Horizon** terminar em **Actions**. Ele valida os JARs, gera o instalador, atualiza `repository/` e cria uma release `mods-vVERSAO` com os dois mods, instalador, catálogo ZIP e hashes SHA256.
-4. Os jogadores abrem **Atualizar New Horizon** com o jogo fechado para instalar a nova versão.
+4. Os computadores com a rotina automática ativada recebem a nova versão na próxima verificação, com o jogo fechado.
 
 As versões de publicação são automáticas: `MAJOR.MINOR.NUMERO_DA_EXECUCAO.TENTATIVA`, usando os dois primeiros números de `pack.json`. Não é preciso mudar a versão interna dos mods. Alterações no instalador, no manifesto ou nos scripts de publicação também geram release; alterações somente na documentação não geram. O workflow usa o token do próprio GitHub, sem segredo adicional. A branch `main` e as releases Minecraft/JCEF existentes são independentes.
 
-O cache público do GitHub pode levar alguns minutos para refletir a nova versão depois que o workflow termina. Nesse intervalo, o atualizador pode ainda informar que não há atualizações; basta abri-lo novamente após a propagação.
+O cache público do GitHub pode levar alguns minutos para refletir a nova versão depois que o workflow termina. A verificação periódica encontra a nova versão após a propagação.
 
 O código-fonte dos mods não está neste repositório: o workflow distribui os JARs enviados para `assets/`, sem compilar os mods. O catálogo mantém os arquivos de versões anteriores para atender clientes com metadados em cache. Não edite `repository/` manualmente. Faça pull antes de novos pushes, pois o workflow grava um commit nessa branch.
 
-Instalações feitas com o antigo instalador 1.1.0 não têm a URL embutida: adicione o endereço acima em **Configurações / Repositórios** da ferramenta de manutenção. Os novos instaladores já vêm conectados. A consulta acontece ao abrir o instalador ou a ferramenta de atualização, sem serviço em segundo plano.
+Para diagnóstico, `.newhorizon-state/status.json` registra a última conferência e `.newhorizon-state/update.log` guarda o último log, sem acumular arquivos a cada execução. No Agendador de Tarefas, a rotina aparece como `NewHorizon-AutoUpdate-ID` (ative a exibição de tarefas ocultas). Ela pode ser desativada pelo usuário. Cada pasta de instalação tem uma tarefa própria.
 
 ## Gerar novamente
 

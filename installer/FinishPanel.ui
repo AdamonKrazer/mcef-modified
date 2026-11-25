@@ -17,7 +17,7 @@ está pronto.</string></property></widget></item>
 2.  Selecione 1.20.1-forge-47.4.0.
 
 3.  Entre no New Horizon e aproveite!</string></property><property name="wordWrap"><bool>true</bool></property></widget></item>
-    <item><widget class="QLabel" name="FinishHint"><property name="text"><string>Use a mesma pasta do Minecraft escolhida na instalação.</string></property><property name="wordWrap"><bool>true</bool></property></widget></item>
+    <item><widget class="QLabel" name="FinishHint"><property name="text"><string>As atualizações já estão ativadas em segundo plano. Você não precisa abrir o instalador novamente.</string></property><property name="wordWrap"><bool>true</bool></property></widget></item>
     <item><spacer name="FinishBottom"><property name="orientation"><enum>Qt::Vertical</enum></property><property name="sizeHint"><size><width>20</width><height>25</height></size></property></spacer></item>
    </layout></item>
   </layout>

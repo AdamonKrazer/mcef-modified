@@ -17,6 +17,7 @@ Component.prototype.setupWelcome = function() {
         if (path) {
             installer.setValue("TargetDir", installer.fromNativeSeparators(path));
             pathField.text = installer.toNativeSeparators(path);
+            installer.setValue("NewHorizonCheckExisting", installer.fromNativeSeparators(path));
         }
     });
     installer.setValidatorForCustomPage(component, "WelcomePage", "validateWelcome");
@@ -49,7 +50,10 @@ Component.prototype.createOperations = function() {
     component.addOperation("Mkdir", "@TargetDir@/mods");
     // Persistent originals are restored by UNDOEXECUTE after these Copy operations are undone.
     // __MOD_COPY_OPERATIONS__
-    component.addOperation("CreateShortcut", "@TargetDir@/NewHorizonMaintenance.exe",
-        "@TargetDir@/Atualizar New Horizon.lnk", "--start-updater",
-        "workingDirectory=@TargetDir@", "description=Atualizar os mods do New Horizon");
+    component.addOperation("Execute", ["{0}", powershell,
+        "-NoLogo", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass",
+        "-File", payload + "/background-task.ps1", "-MinecraftDir", "@TargetDir@", "-Mode", "Register",
+        "errormessage=Não foi possível ativar as atualizações automáticas do New Horizon.",
+        "UNDOEXECUTE", powershell, "-NoLogo", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass",
+        "-File", payload + "/background-task.ps1", "-MinecraftDir", "@TargetDir@", "-Mode", "Unregister"]);
 };

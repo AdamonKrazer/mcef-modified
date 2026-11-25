@@ -67,7 +67,8 @@ def main():
 - Atualizacoes conectadas ao catalogo Qt da branch `mods`.
 
 Baixe **{executable.name}**, feche o Minecraft e execute o instalador.
-Para atualizar depois, abra **Atualizar New Horizon** dentro da pasta `.minecraft`.
+Depois da instalacao, os mods sao atualizados automaticamente em segundo plano, ao entrar no Windows e a cada 30 minutos, com o Minecraft fechado. Nao e necessario abrir atalhos ou o instalador novamente.
+Quem ja usa uma versao anterior deve executar este instalador uma vez para ativar as atualizacoes automaticas.
 
 Os JARs avulsos tambem estao anexados. `SHA256SUMS.txt` permite verificar os downloads.
 O ZIP do repositorio e destinado a administracao; jogadores usam o instalador.
