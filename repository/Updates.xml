@@ -6,16 +6,16 @@
   <Name>com.newhorizon.pack</Name>
   <DisplayName>New Horizon + MCEF + Forge</DisplayName>
   <Description>Minecraft 1.20.1 / Forge 47.4.0. Instala os dois mods do New Horizon e verifica o Forge.</Description>
-  <Version>1.2.2.1</Version>
+  <Version>1.3.3.1</Version>
   <ReleaseDate>2026-11-25</ReleaseDate>
   <Default>true</Default>
   <Script>installscript.qs</Script>
   <UpdateText>Atualização do pacote New Horizon. Feche o Minecraft antes de continuar.</UpdateText>
-  <UpdateFile CompressedSize="9103035" OS="Any" UncompressedSize="12465347"/>
+  <UpdateFile CompressedSize="9105457" OS="Any" UncompressedSize="12472876"/>
   <DownloadableArchives>.newhorizon.7z</DownloadableArchives>
   <UserInterfaces>WelcomePage.ui,FinishPanel.ui</UserInterfaces>
-  <SHA1>1c5f14294444284967fff0d3cff228d494348d3a</SHA1>
+  <SHA1>7c570c15fa0597f55504c3b3eef005892959595e</SHA1>
  </PackageUpdate>
- <SHA1>1c5f14294444284967fff0d3cff228d494348d3a</SHA1>
- <MetadataName>2026-11-25-2037_meta.7z</MetadataName>
+ <SHA1>7c570c15fa0597f55504c3b3eef005892959595e</SHA1>
+ <MetadataName>2026-11-25-2103_meta.7z</MetadataName>
 </Updates>
