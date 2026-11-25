@@ -1,0 +1,41 @@
+name: Publicar mods New Horizon
+
+on:
+  push:
+    branches: [mods]
+    paths:
+      - 'assets/**'
+      - 'installer/**'
+      - 'tools/build.py'
+      - 'tools/bootstrap-qt.ps1'
+      - 'tools/publish.py'
+      - 'pack.json'
+      - '.github/workflows/publish-mods.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publicar-mods
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Preparar Qt Installer Framework
+        run: ./tools/bootstrap-qt.ps1
+      - name: Gerar instalador e publicar atualizacao
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python tools/publish.py

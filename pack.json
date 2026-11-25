@@ -1,0 +1,14 @@
+{
+  "name": "New Horizon",
+  "version": "1.2.0",
+  "minecraft": "1.20.1",
+  "forge": "47.4.0",
+  "java_major": 17,
+  "repository_url": "https://raw.githubusercontent.com/AdamonKrazer/mcef-modified/refs/heads/mods/repository/",
+  "forge_installer": "assets/forge-1.20.1-47.4.0-installer.jar",
+  "forge_sha256": "f3f57465e2cbdc328193f77ba7f0c94cb64405f31ed556753d9275e8bdc06e2c",
+  "mods": [
+    {"file": "assets/newhorizon-mod.jar", "mod_id": "webdisplays"},
+    {"file": "assets/newhorizon-mcef.jar", "mod_id": "mcef"}
+  ]
+}

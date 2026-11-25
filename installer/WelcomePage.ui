@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>WelcomePage</class>
+ <widget class="QWidget" name="WelcomePage">
+  <property name="windowTitle"><string/></property>
+  <layout class="QHBoxLayout" name="WelcomeLayout">
+   <property name="spacing"><number>0</number></property>
+   <property name="leftMargin"><number>0</number></property><property name="topMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property><property name="bottomMargin"><number>0</number></property>
+   <item><widget class="QFrame" name="BrandPanel">
+    <property name="minimumSize"><size><width>430</width><height>550</height></size></property>
+    <property name="maximumSize"><size><width>430</width><height>16777215</height></size></property>
+    <layout class="QVBoxLayout" name="BrandLayout">
+     <property name="spacing"><number>12</number></property><property name="leftMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property>
+     <item><widget class="QLabel" name="BrandEyebrow"><property name="text"><string>NEW HORIZON   /   MINECRAFT</string></property><property name="alignment"><set>Qt::AlignCenter</set></property></widget></item>
+     <item><spacer name="BrandTopSpace"><property name="orientation"><enum>Qt::Vertical</enum></property><property name="sizeHint"><size><width>20</width><height>8</height></size></property></spacer></item>
+     <item><widget class="QLabel" name="BrandArtwork"><property name="minimumSize"><size><width>430</width><height>430</height></size></property><property name="maximumSize"><size><width>430</width><height>430</height></size></property><property name="pixmap"><pixmap>:/newhorizon/server-logo.png</pixmap></property><property name="scaledContents"><bool>true</bool></property></widget></item>
+     <item><spacer name="BrandBottomSpace"><property name="orientation"><enum>Qt::Vertical</enum></property><property name="sizeHint"><size><width>20</width><height>8</height></size></property></spacer></item>
+     <item><widget class="QLabel" name="BrandTagline"><property name="text"><string>UM NOVO HORIZONTE ESPERA POR VOCÊ.</string></property><property name="alignment"><set>Qt::AlignCenter</set></property></widget></item>
+    </layout>
+   </widget></item>
+   <item><widget class="QFrame" name="ContentPanel">
+    <property name="minimumSize"><size><width>450</width><height>0</height></size></property>
+    <layout class="QVBoxLayout" name="ContentLayout">
+     <property name="spacing"><number>14</number></property><property name="leftMargin"><number>30</number></property><property name="topMargin"><number>28</number></property><property name="rightMargin"><number>26</number></property><property name="bottomMargin"><number>20</number></property>
+     <item><widget class="QLabel" name="Eyebrow"><property name="text"><string>SEU PRÓXIMO MUNDO COMEÇA AQUI</string></property></widget></item>
+     <item><widget class="QLabel" name="WelcomeTitle"><property name="text"><string>Prepare-se para
+o New Horizon.</string></property></widget></item>
+     <item><widget class="QLabel" name="WelcomeDescription"><property name="text"><string>Os mods do servidor e o Forge, prontos no seu Minecraft em poucos cliques.</string></property><property name="wordWrap"><bool>true</bool></property></widget></item>
+     <item><widget class="QFrame" name="PackCard"><layout class="QVBoxLayout" name="PackLayout">
+      <property name="spacing"><number>12</number></property><property name="leftMargin"><number>18</number></property><property name="topMargin"><number>16</number></property><property name="rightMargin"><number>18</number></property><property name="bottomMargin"><number>16</number></property>
+      <item><widget class="QLabel" name="PackCaption"><property name="text"><string>O QUE VAMOS INSTALAR</string></property></widget></item>
+      <item><widget class="QLabel" name="ModRow"><property name="text"><string>✓   New Horizon Mod</string></property></widget></item>
+      <item><widget class="QLabel" name="McefRow"><property name="text"><string>✓   New Horizon MCEF</string></property></widget></item>
+      <item><widget class="QLabel" name="ForgeRow"><property name="text"><string>✓   Forge 47.4.0 · Minecraft 1.20.1</string></property></widget></item>
+      <item><widget class="QLabel" name="ForgeHint"><property name="text"><string>Se o Forge já estiver instalado, ele será mantido.</string></property><property name="wordWrap"><bool>true</bool></property></widget></item>
+     </layout></widget></item>
+     <item><widget class="QLabel" name="FolderCaption"><property name="text"><string>PASTA DO MINECRAFT</string></property></widget></item>
+     <item><layout class="QHBoxLayout" name="FolderLayout"><property name="spacing"><number>8</number></property>
+      <item><widget class="QLineEdit" name="MinecraftPath"><property name="readOnly"><bool>true</bool></property><property name="toolTip"><string>Pasta do Minecraft usada pelo seu launcher.</string></property></widget></item>
+      <item><widget class="QPushButton" name="BrowseFolder"><property name="text"><string>Alterar</string></property><property name="autoDefault"><bool>false</bool></property></widget></item>
+     </layout></item>
+     <item><widget class="QLabel" name="PrerequisiteHint"><property name="text"><string>Feche o jogo antes de instalar. Para preparar o Forge, é preciso Java 17 e conexão com a internet.</string></property><property name="wordWrap"><bool>true</bool></property></widget></item>
+     <item><spacer name="ContentBottomSpace"><property name="orientation"><enum>Qt::Vertical</enum></property><property name="sizeHint"><size><width>20</width><height>0</height></size></property></spacer></item>
+    </layout>
+   </widget></item>
+  </layout>
+ </widget>
+ <resources/><connections/>
+</ui>

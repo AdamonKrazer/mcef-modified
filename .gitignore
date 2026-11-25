@@ -1,0 +1,11 @@
+tools/qtifw/
+tools/qt-python/
+tools/*.7z
+tools/qt-updates.xml
+tools/qt-source-tree.json
+build/
+dist/
+__pycache__/
+*.pyc
+.test-work/
+github-publish/

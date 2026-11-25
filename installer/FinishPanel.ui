@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FinishPanel</class>
+ <widget class="QWidget" name="FinishPanel">
+  <layout class="QHBoxLayout" name="FinishLayout">
+   <property name="spacing"><number>40</number></property>
+   <item><widget class="QLabel" name="FinishedArtwork"><property name="minimumSize"><size><width>430</width><height>430</height></size></property><property name="maximumSize"><size><width>430</width><height>430</height></size></property><property name="pixmap"><pixmap>:/newhorizon/server-logo.png</pixmap></property><property name="scaledContents"><bool>true</bool></property></widget></item>
+   <item><layout class="QVBoxLayout" name="FinishContent">
+    <property name="spacing"><number>20</number></property>
+    <item><spacer name="FinishTop"><property name="orientation"><enum>Qt::Vertical</enum></property><property name="sizeHint"><size><width>20</width><height>25</height></size></property></spacer></item>
+    <item><widget class="QLabel" name="SuccessEyebrow"><property name="text"><string>✓  INSTALAÇÃO CONCLUÍDA</string></property></widget></item>
+    <item><widget class="QLabel" name="FinishTitle"><property name="text"><string>Seu novo mundo
+está pronto.</string></property></widget></item>
+    <item><widget class="QLabel" name="FinishDescription"><property name="text"><string>O Forge e os mods do New Horizon estão preparados. Agora é só abrir o jogo.</string></property><property name="wordWrap"><bool>true</bool></property></widget></item>
+    <item><widget class="QLabel" name="LaunchSteps"><property name="text"><string>1.  Abra o seu launcher do Minecraft.
+
+2.  Selecione 1.20.1-forge-47.4.0.
+
+3.  Entre no New Horizon e aproveite!</string></property><property name="wordWrap"><bool>true</bool></property></widget></item>
+    <item><widget class="QLabel" name="FinishHint"><property name="text"><string>Use a mesma pasta do Minecraft escolhida na instalação.</string></property><property name="wordWrap"><bool>true</bool></property></widget></item>
+    <item><spacer name="FinishBottom"><property name="orientation"><enum>Qt::Vertical</enum></property><property name="sizeHint"><size><width>20</width><height>25</height></size></property></spacer></item>
+   </layout></item>
+  </layout>
+ </widget>
+ <resources/><connections/>
+</ui>
