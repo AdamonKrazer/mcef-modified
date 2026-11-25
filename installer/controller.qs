@@ -44,6 +44,10 @@ Controller.prototype.configureExistingBackground = function() {
     var root = installer.value("TargetDir");
     if (installer.isCommandLineInstance() || !installer.fileExists(root + "/NewHorizonMaintenance.exe") ||
         !installer.fileExists(root + "/newhorizon-components.xml")) return false;
+    // Qt can enter Introduction again while closing/restarting its wizard.
+    // A single setup instance must never launch the migration twice.
+    if (installer.value("NewHorizonBackgroundHandled") === root) return true;
+    installer.setValue("NewHorizonBackgroundHandled", root);
     var page = gui.currentPageWidget();
     page.title = "Preparando atualizações automáticas";
     if (page.MessageLabel) {

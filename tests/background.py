@@ -80,6 +80,10 @@ Controller.prototype.finishBackgroundSetup = function(status) {
                 if not marker.exists():
                     migration.kill()
                     raise AssertionError('GUI migration failed: ' + (work / 'migration.log').read_text(errors='replace')[-4000:])
+                migration.wait(timeout=15)
+                # IFW may restart its native process; let the closing wizard
+                # release its locks before another background invocation.
+                time.sleep(1)
             assert json.loads(marker.read_text())['status'] == 'updated', marker.read_text()
         else:
             ps(worker, '-MinecraftDir', game, '-RepositoryUrl', source)
