@@ -35,9 +35,11 @@ def main():
     parser = argparse.ArgumentParser()
     version = json.loads((ROOT / 'pack.json').read_text())["version"]
     parser.add_argument("--setup", type=Path, default=ROOT / f"dist/NewHorizon-Setup-{version}.exe")
+    parser.add_argument("--install-repository", type=Path, help="Pin initial installation to a local catalog")
     update = parser.add_mutually_exclusive_group()
     update.add_argument("--update-repository", type=Path)
     update.add_argument("--update-url", help="Real HTTPS repository to test")
+    update.add_argument("--update-default", action="store_true", help="Use the URL embedded in the maintenance tool")
     args = parser.parse_args()
     test_root = ROOT / ".test-work"
     test_root.mkdir(exist_ok=True)
@@ -59,19 +61,23 @@ def main():
     (game / "saves/world.txt").write_text("world kept")
     (game / "mods/unrelated.jar").write_bytes(b"unrelated user mod")
     (game / "mods/newhorizon-mod.jar").write_bytes(b"previous user version")
-    output = run(args.setup, ["--root", str(game), "install"], work / "install.log")
+    install_options = (["--set-temp-repository", args.install_repository.resolve().as_uri()]
+                       if args.install_repository else [])
+    output = run(args.setup, [*install_options, "--root", str(game), "install"], work / "install.log")
     assert "ja instalado e verificado" in output, output[-3000:]
     for name in ("newhorizon-mod.jar", "newhorizon-mcef.jar"):
         assert (game / "mods" / name).read_bytes() == (ROOT / "assets" / name).read_bytes()
     maintenance = game / "NewHorizonMaintenance.exe"
     assert maintenance.is_file()
     assert (game / "Atualizar New Horizon.lnk").is_file()
-    if args.update_repository or args.update_url:
-        repository_url = (args.update_url or args.update_repository.resolve().as_uri()).rstrip("/")
-        if args.update_url:
+    if args.update_repository or args.update_url or args.update_default:
+        default_url = json.loads((ROOT / "pack.json").read_text())["repository_url"] if args.update_default else None
+        repository_url = (default_url or args.update_url or args.update_repository.resolve().as_uri()).rstrip("/")
+        if args.update_url or args.update_default:
             with urlopen(repository_url.rstrip("/") + "/Updates.xml", timeout=60) as response:
                 expected_version = ET.fromstring(response.read()).findtext("PackageUpdate/Version")
-            output = run(maintenance, ["--add-repository", repository_url, "update"], work / "update.log")
+            options = [] if args.update_default else ["--add-repository", repository_url]
+            output = run(maintenance, [*options, "update"], work / "update.log")
         else:
             output = run(maintenance, ["--set-temp-repository", repository_url, "update"], work / "update.log")
             expected_version = ET.parse(args.update_repository / "Updates.xml").findtext("PackageUpdate/Version")
@@ -88,10 +94,10 @@ def main():
     missing = work / "missing-minecraft"
     missing.mkdir()
     (missing / "keep.txt").write_text("keep")
-    run(args.setup, ["--root", str(missing), "install"], work / "missing.log", success=False)
+    run(args.setup, [*install_options, "--root", str(missing), "install"], work / "missing.log", success=False)
     assert not (missing / "mods/newhorizon-mod.jar").exists()
     assert (missing / "keep.txt").read_text() == "keep"
-    print(f"PASS: install, integrity, update={bool(args.update_repository or args.update_url)}, uninstall, preservation, failure rollback. Logs: {work}")
+    print(f"PASS: install, integrity, update={bool(args.update_repository or args.update_url or args.update_default)}, uninstall, preservation, failure rollback. Logs: {work}")
 
 
 if __name__ == "__main__":

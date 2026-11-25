@@ -49,6 +49,8 @@ Para publicar novos mods:
 
 As versões de publicação são automáticas: `MAJOR.MINOR.NUMERO_DA_EXECUCAO.TENTATIVA`, usando os dois primeiros números de `pack.json`. Não é preciso mudar a versão interna dos mods. Alterações no instalador, no manifesto ou nos scripts de publicação também geram release; alterações somente na documentação não geram. O workflow usa o token do próprio GitHub, sem segredo adicional. A branch `main` e as releases Minecraft/JCEF existentes são independentes.
 
+O cache público do GitHub pode levar alguns minutos para refletir a nova versão depois que o workflow termina. Nesse intervalo, o atualizador pode ainda informar que não há atualizações; basta abri-lo novamente após a propagação.
+
 O código-fonte dos mods não está neste repositório: o workflow distribui os JARs enviados para `assets/`, sem compilar os mods. O catálogo mantém os arquivos de versões anteriores para atender clientes com metadados em cache. Não edite `repository/` manualmente. Faça pull antes de novos pushes, pois o workflow grava um commit nessa branch.
 
 Instalações feitas com o antigo instalador 1.1.0 não têm a URL embutida: adicione o endereço acima em **Configurações / Repositórios** da ferramenta de manutenção. Os novos instaladores já vêm conectados. A consulta acontece ao abrir o instalador ou a ferramenta de atualização, sem serviço em segundo plano.
@@ -72,11 +74,12 @@ python tools/build.py --ifw-bin C:/Qt/Tools/QtInstallerFramework/4.7/bin --versi
 ## Verificação
 
 ```powershell
-python tools/build.py --version 1.1.1 --output .test-work/release
-python tests/integration.py --update-repository .test-work/release/repository-1.1.1
+# Baseline anterior ao pacote publicado, para testar a URL embutida:
+python tools/build.py --version 1.2.0 --output .test-work/baseline
+python tests/integration.py --setup .test-work/baseline/NewHorizon-Setup-1.2.0.exe --install-repository .test-work/baseline/repository-1.2.0 --update-default
 
 # Fluxo gráfico real em uma pasta de teste, incluindo a confirmação:
-python tests/gui_flow.py --setup dist/NewHorizon-Setup-1.1.0.exe
+python tests/gui_flow.py --setup dist/NewHorizon-Setup-1.2.2.1.exe
 
 # Teste adicional com download real das bibliotecas do Forge:
 python tests/fresh_forge.py
