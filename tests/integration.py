@@ -37,7 +37,7 @@ def main():
     parser.add_argument("--setup", type=Path, default=ROOT / f"dist/NewHorizon-Setup-{version}.exe")
     update = parser.add_mutually_exclusive_group()
     update.add_argument("--update-repository", type=Path)
-    update.add_argument("--update-url", help="Real HTTPS repository to persist and test")
+    update.add_argument("--update-url", help="Real HTTPS repository to test")
     args = parser.parse_args()
     test_root = ROOT / ".test-work"
     test_root.mkdir(exist_ok=True)
@@ -67,12 +67,11 @@ def main():
     assert maintenance.is_file()
     assert (game / "Atualizar New Horizon.lnk").is_file()
     if args.update_repository or args.update_url:
-        repository_url = args.update_url or args.update_repository.resolve().as_uri()
+        repository_url = (args.update_url or args.update_repository.resolve().as_uri()).rstrip("/")
         if args.update_url:
             with urlopen(repository_url.rstrip("/") + "/Updates.xml", timeout=60) as response:
                 expected_version = ET.fromstring(response.read()).findtext("PackageUpdate/Version")
-            run(maintenance, ["--add-repository", repository_url, "check-updates"], work / "check-updates.log")
-            output = run(maintenance, ["update"], work / "update.log")
+            output = run(maintenance, ["--add-repository", repository_url, "update"], work / "update.log")
         else:
             output = run(maintenance, ["--set-temp-repository", repository_url, "update"], work / "update.log")
             expected_version = ET.parse(args.update_repository / "Updates.xml").findtext("PackageUpdate/Version")

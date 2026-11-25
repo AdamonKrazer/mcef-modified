@@ -4,7 +4,7 @@
   "minecraft": "1.20.1",
   "forge": "47.4.0",
   "java_major": 17,
-  "repository_url": "https://raw.githubusercontent.com/AdamonKrazer/mcef-modified/refs/heads/mods/repository/",
+  "repository_url": "https://raw.githubusercontent.com/AdamonKrazer/mcef-modified/refs/heads/mods/repository",
   "forge_installer": "assets/forge-1.20.1-47.4.0-installer.jar",
   "forge_sha256": "f3f57465e2cbdc328193f77ba7f0c94cb64405f31ed556753d9275e8bdc06e2c",
   "mods": [

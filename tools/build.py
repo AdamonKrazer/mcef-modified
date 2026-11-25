@@ -136,7 +136,9 @@ def generate(manifest_path: Path, work: Path, version: str | None = None,
         element(installer, name, value)
     if repository_url:
         repository = ET.SubElement(ET.SubElement(installer, "RemoteRepositories"), "Repository")
-        element(repository, "Url", repository_url.rstrip("/") + "/")
+        # IFW appends the archive separator itself. GitHub redirects // with a
+        # relative Location that the IFW 4.7 archive downloader cannot follow.
+        element(repository, "Url", repository_url.rstrip("/"))
     translations = ET.SubElement(installer, "Translations")
     element(translations, "Translation", "newhorizon_pt_BR")
     element(translations, "Translation", "newhorizonqt_pt_BR")

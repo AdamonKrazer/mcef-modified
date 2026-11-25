@@ -24,7 +24,7 @@ def main():
     pack = json.loads((ROOT / "pack.json").read_text(encoding="utf-8"))
     base = ".".join(pack["version"].split(".")[:2])
     version = f'{base}.{int(os.environ["GITHUB_RUN_NUMBER"])}.{int(os.environ["GITHUB_RUN_ATTEMPT"])}'
-    expected_url = f"https://raw.githubusercontent.com/{repository}/refs/heads/mods/repository/"
+    expected_url = f"https://raw.githubusercontent.com/{repository}/refs/heads/mods/repository"
     if pack["repository_url"] != expected_url:
         raise SystemExit("pack.json deve apontar para o repositorio desta branch mods.")
     run(sys.executable, "tools/build.py", "--version", version)

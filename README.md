@@ -37,7 +37,7 @@ O instalador cria `NewHorizonMaintenance.exe` e `Atualizar New Horizon.lnk` dent
 O instalador está conectado ao catálogo Qt publicado na branch **mods** de [AdamonKrazer/mcef-modified](https://github.com/AdamonKrazer/mcef-modified/tree/mods):
 
 ```text
-https://raw.githubusercontent.com/AdamonKrazer/mcef-modified/refs/heads/mods/repository/
+https://raw.githubusercontent.com/AdamonKrazer/mcef-modified/refs/heads/mods/repository
 ```
 
 Para publicar novos mods:
@@ -61,7 +61,7 @@ Requisitos de desenvolvimento: Windows, Python 3.11+ e Qt Installer Framework. A
 python tools/build.py --version 1.2.0
 
 # Com endereço de atualização:
-python tools/build.py --version 1.2.1 --repository-url https://raw.githubusercontent.com/AdamonKrazer/mcef-modified/refs/heads/mods/repository/
+python tools/build.py --version 1.2.1 --repository-url https://raw.githubusercontent.com/AdamonKrazer/mcef-modified/refs/heads/mods/repository
 
 # Com outra instalação do Qt IFW:
 python tools/build.py --ifw-bin C:/Qt/Tools/QtInstallerFramework/4.7/bin --version 1.2.2
