@@ -8,11 +8,13 @@ import subprocess
 import uuid
 import zipfile
 import time
+import atexit
 from integration import ROOT, PROFILE, run
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--setup", type=Path, required=True)
 parser.add_argument("--hold-finish", action="store_true")
+parser.add_argument("--manual", action="store_true", help="Use the packaged controller and click through the real UI")
 args = parser.parse_args()
 work = ROOT / ".test-work" / ("gui-flow-" + uuid.uuid4().hex[:8])
 game = work / "minecraft"
@@ -54,26 +56,42 @@ script.write_text(test_script, encoding="utf-8")
 log = work / "gui.log"
 print(f"Graphical test: {work}", flush=True)
 with log.open("wb") as output:
+    options = [] if args.manual else ["--script", str(script)]
     process = subprocess.Popen([str(args.setup.resolve()), "--cache-path", str(work / "cache"),
-                             "--script", str(script), "PreviewTargetDir=" + game.as_posix()],
+                             *options, "PreviewTargetDir=" + game.as_posix()],
                             stdout=output, stderr=subprocess.STDOUT)
-    deadline = time.monotonic() + 60
+    def cleanup():
+        if args.hold_finish:
+            return
+        if process.poll() is None:
+            subprocess.run(['taskkill', '/PID', str(process.pid), '/T', '/F'], capture_output=True)
+        if (game / 'NewHorizonMaintenance.exe').exists():
+            run(game / 'NewHorizonMaintenance.exe', ['purge'], work / 'cleanup.log')
+    atexit.register(cleanup)
+    deadline = time.monotonic() + (240 if args.manual else 60)
     marker = game / "flow-results.txt"
     while time.monotonic() < deadline:
+        if args.manual and process.poll() is not None:
+            break
         if marker.exists() and "TEST_GUI_FINISHED_SUCCESS" in marker.read_text():
             break
         time.sleep(0.25)
     else:
         process.kill()
         raise AssertionError("GUI flow did not complete: " + log.read_text(errors="replace")[-3000:])
-transcript = marker.read_text()
-assert "TEST_WELCOME_NO_WRITES" in transcript, transcript[-3000:]
-assert "TEST_GUI_FINISHED_SUCCESS" in transcript, transcript[-3000:]
+    if not args.hold_finish:
+        process.wait(timeout=15)
+        assert process.returncode == 0, "The setup did not exit successfully"
+if not args.manual:
+    transcript = marker.read_text()
+    assert "TEST_WELCOME_NO_WRITES" in transcript, transcript[-3000:]
+    assert "TEST_GUI_FINISHED_SUCCESS" in transcript, transcript[-3000:]
 assert "TypeError" not in log.read_text(errors="replace")
 for name in ("newhorizon-mod.jar", "newhorizon-mcef.jar"):
     assert (game / "mods" / name).read_bytes() == (ROOT / "assets" / name).read_bytes()
 if not args.hold_finish:
     time.sleep(1)
     run(game / "NewHorizonMaintenance.exe", ["purge"], work / "uninstall.log")
+    atexit.unregister(cleanup)
 assert (game / "keep.txt").read_text() == "keep"
 print(f"PASS: branded GUI, no writes before confirmation, commit, installation and completion. Logs: {work}")

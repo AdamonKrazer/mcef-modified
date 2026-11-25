@@ -182,9 +182,16 @@ def main() -> None:
     repository = work / "repository"
     subprocess.run([str(ifw / "repogen.exe"), "-p", str(work / "packages"), str(repository)], check=True)
     executable = args.output.resolve() / f'NewHorizon-Setup-{pack["version"]}.exe'
+    engine = work / "NewHorizonEngine.exe"
     subprocess.run([str(ifw / "binarycreator.exe"), "-c", str(work / "config" / "config.xml"),
                     "-r", str(work / "config" / "branding.qrc"),
-                    "-p", str(work / "packages"), str(executable)], check=True)
+                    "-p", str(work / "packages"), str(engine)], check=True)
+    compiler = Path(os.environ.get("SystemRoot", "C:/Windows")) / "Microsoft.NET/Framework64/v4.0.30319/csc.exe"
+    if not compiler.is_file():
+        raise ValueError("Compilador .NET Framework do Windows nao encontrado.")
+    subprocess.run([str(compiler), "/nologo", "/target:winexe", "/platform:anycpu", "/optimize+", "/utf8output",
+                    "/out:" + str(executable), "/resource:" + str(engine) + ",NewHorizon.QtInstaller",
+                    str(ROOT / "installer/launcher.cs")], check=True)
     # Versioned repository directory avoids leaving obsolete archives from a previous release.
     shutil.copytree(repository, output_repo)
     (executable.parent / (executable.name + ".sha256")).write_text(sha256(executable) + "  " + executable.name + "\n", encoding="ascii")

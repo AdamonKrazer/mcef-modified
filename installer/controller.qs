@@ -19,10 +19,6 @@ function Controller() {
 
 Controller.prototype.IntroductionPageCallback = function() {
     if (installer.isInstaller()) {
-        if (Controller.prototype.configureExistingBackground()) {
-            gui.rejectWithoutPrompt();
-            return;
-        }
         gui.currentPageWidget().title = "New Horizon";
         gui.currentPageWidget().MessageLabel.setText("Carregando seu instalador...");
         if (installer.value("NewHorizonIntroLoaded") !== "true") {
@@ -107,6 +103,12 @@ Controller.prototype.DynamicWelcomePageCallback = function() {
     if (installer.value("NewHorizonIntroHidden") !== "true") {
         installer.setValue("NewHorizonIntroHidden", "true");
         installer.setDefaultPageVisible(QInstaller.Introduction, false);
+    }
+    // Introduction runs during Qt's startup, before app.exec(). Closing there
+    // leaves a visible orphan wizard. Migrate only after the queued Next action
+    // reaches this page inside the running event loop.
+    if (Controller.prototype.configureExistingBackground()) {
+        gui.rejectWithoutPrompt();
     }
 };
 

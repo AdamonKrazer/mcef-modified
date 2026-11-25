@@ -8,6 +8,8 @@ Baixe o instalador na release mais recente com nome **New Horizon - Mods** em [R
 
 A interface usa a arte original do servidor (o arquivo de 804.805 bytes indicado em Downloads), tema escuro e detalhes laranja. A primeira tela reúne os mods incluídos, a pasta de destino e o botão **Instalar agora**. Seleção de componentes, menu Iniciar e confirmação redundante foram removidos. A tela final orienta a abertura do perfil Forge. Os catálogos de tradução do Qt são incluídos no executável para que os controles apareçam em português brasileiro independentemente do idioma do Windows.
 
+Só uma instância do instalador abre por sessão do usuário. Abrir novamente o executável, mesmo com outro nome, traz a janela existente para frente. O iniciador mantém esse bloqueio até o encerramento real do Qt, inclusive se o framework reiniciar seu processo. A migração de instalações anteriores ocorre depois que a interface entra no fluxo normal de páginas, evitando uma janela vazia com **Próximo** sem ação.
+
 O pacote contém:
 
 | Componente | Versão |
@@ -61,7 +63,7 @@ Para diagnóstico, `.newhorizon-state/status.json` registra a última conferênc
 
 ## Gerar novamente
 
-Requisitos de desenvolvimento: Windows, Python 3.11+ e Qt Installer Framework. As ferramentas usadas nesta máquina estão em `tools/qtifw/`.
+Requisitos de desenvolvimento: Windows, Python 3.11+, Qt Installer Framework e o compilador C# do .NET Framework do Windows. As ferramentas Qt usadas nesta máquina estão em `tools/qtifw/`.
 
 ```powershell
 python tools/build.py --version 1.2.0
@@ -74,6 +76,8 @@ python tools/build.py --ifw-bin C:/Qt/Tools/QtInstallerFramework/4.7/bin --versi
 ```
 
 `tools/bootstrap-qt.ps1` baixa e extrai a distribuição oficial das ferramentas (exige 7-Zip). `QTIFW_BIN` também pode apontar para a pasta de executáveis. O gerador valida os JARs e seus modIds, confere o hash do Forge, gera os metadados e chama `repogen` e `binarycreator`. Cada compilação deixa a estrutura Qt em uma nova pasta `build/qtifw-*` para inspeção. Use uma nova versão ou uma pasta `--output` diferente se o repositório daquela versão já existir.
+
+O executável distribuído incorpora o instalador Qt como recurso. `installer/launcher.cs` controla a instância única e verifica o SHA256 antes de usar a cópia do mecanismo em `%LOCALAPPDATA%/NewHorizon/installer/`. A interface, as operações, os pacotes e o atualizador continuam sendo do Qt Installer Framework. A rotina em segundo plano usa diretamente o mecanismo de manutenção, sem abrir o iniciador gráfico.
 
 ## Verificação
 
