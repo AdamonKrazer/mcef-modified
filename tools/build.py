@@ -132,6 +132,7 @@ def generate(manifest_path: Path, work: Path, version: str | None = None,
         "RemoveTargetDir": "false", "AllowNonAsciiCharacters": "true", "AllowSpaceInPath": "true",
         "WizardStyle": "Classic", "WizardDefaultWidth": "980", "WizardDefaultHeight": "660",
         "WizardMinimumWidth": "960", "WizardMinimumHeight": "640", "WizardShowPageList": "false",
+        "InstallerApplicationIcon": "installer-icon",
         "InstallerWindowIcon": "window-logo.png", "TitleColor": "#ffffff",
         "ControlScript": "controller.qs", "StyleSheet": "style.qss",
         "DisableAuthorizationFallback": "true"
@@ -145,7 +146,8 @@ def generate(manifest_path: Path, work: Path, version: str | None = None,
     translations = ET.SubElement(installer, "Translations")
     element(translations, "Translation", "newhorizon_pt_BR")
     element(translations, "Translation", "newhorizonqt_pt_BR")
-    shutil.copyfile(ROOT / "assets/server-logo.png", config / "window-logo.png")
+    shutil.copyfile(ROOT / "assets/installer-icon.png", config / "window-logo.png")
+    shutil.copyfile(ROOT / "assets/installer-icon.ico", config / "installer-icon.ico")
     resources = ET.Element("RCC")
     resource = ET.SubElement(resources, "qresource", prefix="/newhorizon")
     ET.SubElement(resource, "file", alias="server-logo.png").text = str(ROOT / "assets/server-logo.png")
@@ -190,6 +192,7 @@ def main() -> None:
     if not compiler.is_file():
         raise ValueError("Compilador .NET Framework do Windows nao encontrado.")
     subprocess.run([str(compiler), "/nologo", "/target:winexe", "/platform:anycpu", "/optimize+", "/utf8output",
+                    "/win32icon:" + str(ROOT / "assets/installer-icon.ico"),
                     "/out:" + str(executable), "/resource:" + str(engine) + ",NewHorizon.QtInstaller",
                     str(ROOT / "installer/launcher.cs")], check=True)
     # Versioned repository directory avoids leaving obsolete archives from a previous release.

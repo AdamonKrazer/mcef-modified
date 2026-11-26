@@ -97,6 +97,8 @@ O teste usa uma cópia das bibliotecas do Forge existente em `%APPDATA%\.minecra
 
 ## Interface e traduções
 
+O ícone do executável e da janela usa `assets/installer-icon.png`, copiado de `icone 3.png` (64 × 64) de Downloads. `assets/installer-icon.ico` reúne as versões de 16, 24, 32, 48 e 64 pixels e é incorporado tanto no iniciador quanto no instalador Qt. A arte maior da interface permanece em `assets/server-logo.png`.
+
 `installer/WelcomePage.ui` e `installer/FinishPanel.ui` definem as telas; `installer/style.qss` define o tema. A logo é incorporada como recurso Qt, sem modificar a imagem original. `installer/translations/` contém os catálogos oficiais do [Qt IFW 4.7](https://github.com/qtproject/installer-framework/blob/4.7/src/sdk/translations/ifw_pt_BR.ts) e [Qt Base](https://github.com/qt/qttranslations/blob/5.15/translations/qtbase_pt_BR.ts), com ajustes para o New Horizon. Os `.qm` compilados são versionados e usados diretamente no build. Para recompilar após editar traduções: `python tools/localize.py`, usando `lrelease.exe` de `tools/qt-python/PySide6/` (ferramenta de desenvolvimento, não distribuída ao usuário). Mensagens técnicas emitidas pelo instalador oficial do Forge permanecem no idioma original nos detalhes do log.
 
 ## Referências
